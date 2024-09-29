@@ -18,8 +18,8 @@ class CatboostCli < Formula
   desc "Fast, scalable, high performance Gradient Boosting on Decision Trees cli tool"
   homepage "https://catboost.ai"
   url "https://github.com/catboost/catboost.git",
-      tag:      "v1.2.5",
-      revision: "2605fe627ed4271aa8a87ff3564fb68de5f116f0"
+    tag:      "v1.2.7",
+    revision: "f903943a8cd903a117c3d3c8421cc72d3910562c"
   license "Apache-2.0"
   head "https://github.com/catboost/catboost.git", branch: "master"
 
@@ -37,6 +37,10 @@ class CatboostCli < Formula
 
   uses_from_macos "llvm" => :build
 
+  on_linux do
+    depends_on "lld"
+  end
+
   resource "testdata" do
     url "https://github.com/catboost/tutorials.git",
         branch:   "master",
@@ -48,7 +52,8 @@ class CatboostCli < Formula
 
     args = [
       "-DCATBOOST_COMPONENTS=app",
-      "-DHAVE_CUDA=NO",
+      "-DCMAKE_POSITION_INDEPENDENT_CODE=On",
+      "-DHAVE_CUDA=no",
       "-DCMAKE_TOOLCHAIN_FILE=#{buildpath}/build/toolchains/clang.toolchain",
     ]
 
